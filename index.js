@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 
 import connectMongoDB from "./db/configurationDB.mjs"
 import gamesRoutes from './routes/games.routes.mjs';
+import wishlistRouter from './routes/wishlist.routes.mjs';
 
 import errorHandler from './middlewares/error.middleware.mjs';
 
@@ -27,7 +28,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routes
 // app.use('/auth', authRoutes);
 app.use('/games', gamesRoutes);
-
+app.use('/user', wishlistRouter); 
 
 
 // 404 handler root
