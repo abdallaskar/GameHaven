@@ -3,8 +3,8 @@ import * as GameController from '../controllers/games.controller.mjs';
 import validate from '../middlewares/validate.middleware.mjs';
 import gameSchema from '../utils/ajvSchemas/game.schema.mjs';
 import upload from '../middlewares/upload.middleware.mjs';
-// import authMiddleware from '../middlewares/auth.middleware.mjs';
-// import isAdmin from '../middlewares/isAdmin.middleware.mjs'; 
+import authMiddleware from '../middlewares/auth.middleware.mjs';
+import isAdmin from '../middlewares/isAdmin.middleware.mjs';
 
 const router = express.Router();
 
@@ -15,8 +15,8 @@ router.get('/:id', GameController.getGameById);    // GET /games/:id
 //  Admin Routes (Protected)
 router.post(
     '/',
-    // authMiddleware,
-    // isAdmin,
+    authMiddleware,
+    isAdmin,
     upload.single('cover'),
     validate(gameSchema),
     GameController.createGame
@@ -24,8 +24,8 @@ router.post(
 
 router.put(
     '/:id',
-    // authMiddleware,
-    // isAdmin,
+    authMiddleware,
+    isAdmin,
     upload.single('cover'),
     validate(gameSchema),
     GameController.updateGame
@@ -33,8 +33,8 @@ router.put(
 
 router.delete(
     '/:id',
-    // authMiddleware,
-    // isAdmin,
+    authMiddleware,
+    isAdmin,
     GameController.deleteGame
 );
 
