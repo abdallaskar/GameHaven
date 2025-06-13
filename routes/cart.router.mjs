@@ -1,13 +1,15 @@
 import { Router } from "express";
+import authMiddleware from '../middlewares/auth.middleware.mjs';
 import { addGameQuantity, addGameToCart, getCartItems, subtractGameQuantity } from "../controllers/cart.controller.mjs";
 
 const cartRouter = Router();
-
-cartRouter.post('/', async (req, res) => {
+// add real user id in all routes  and handle quentites counter
+cartRouter.post('/', authMiddleware, async (req, res) => {
     //console.log("-from router-" , req)
     addGameToCart(req, res);
 })
-cartRouter.post('/add/:id', async (req, res) => {
+// add real user id in all routes 
+cartRouter.post('/add/:id', authMiddleware, async (req, res) => {
     //console.log("-from router-" , req)
     addGameQuantity(req, res);
 })

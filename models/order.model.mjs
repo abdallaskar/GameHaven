@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 // user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.Mixed, required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   items: [
     {
       gameId: {
-        type: mongoose.Schema.Types.Mixed,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Game",
         required: true,
       },
