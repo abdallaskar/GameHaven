@@ -8,6 +8,7 @@ import connectMongoDB from "./db/configurationDB.mjs"
 import gamesRoutes from './routes/games.routes.mjs';
 import wishlistRouter from './routes/wishlist.routes.mjs';
 import authRouter from './routes/auth.routes.mjs';
+import orderRouter from "./routes/order.routes.mjs";
 
 import errorHandler from './middlewares/error.middleware.mjs';
 
@@ -30,7 +31,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routes
 app.use('/auth', authRouter);
 app.use('/games', gamesRoutes);
-app.use('/user', wishlistRouter); 
+app.use('/user', wishlistRouter);
+app.use("/user/orders", orderRouter);
 
 
 // 404 handler root
