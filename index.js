@@ -1,4 +1,5 @@
 import express from 'express';
+
 import dotenv from 'dotenv';
 
 import path from 'path';
@@ -8,6 +9,8 @@ import connectMongoDB from "./db/configurationDB.mjs"
 import gamesRoutes from './routes/games.routes.mjs';
 import wishlistRouter from './routes/wishlist.routes.mjs';
 import authRouter from './routes/auth.routes.mjs';
+import cartRouter from './routes/cart.router.mjs';
+
 
 import errorHandler from './middlewares/error.middleware.mjs';
 
@@ -31,6 +34,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/auth', authRouter);
 app.use('/games', gamesRoutes);
 app.use('/user', wishlistRouter); 
+app.use('/cart', cartRouter);
 
 
 // 404 handler root
@@ -49,6 +53,7 @@ connectMongoDB(process.env.MONGO_URI).then(
 
 // Error handler middleware
 app.use(errorHandler);
+
 
 
 
