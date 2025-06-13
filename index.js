@@ -12,6 +12,7 @@ import authRouter from './routes/auth.routes.mjs';
 import orderRouter from "./routes/order.routes.mjs";
 
 import errorHandler from './middlewares/error.middleware.mjs';
+import cartRouter from './routes/cart.router.mjs';
 
 // Setup __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -33,6 +34,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/auth', authRouter);
 app.use('/games', gamesRoutes);
 app.use('/user', wishlistRouter);
+app.use('/cart', cartRouter);
+app.use("/user/orders", orderRouter);
 
 
 // 404 handler root
