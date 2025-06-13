@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 
-import { getAllOrders, getOrderById, createOrder } from "../service.mjs";
+import { getAllOrders, getOrderById, createOrder } from "../services/order.service.mjs";
 
 export const getOrders = async (req, res) => {
   try {

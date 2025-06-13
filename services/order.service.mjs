@@ -1,4 +1,4 @@
-import Order from "./models/order.model.mjs";
+import Order from "../models/order.model.mjs";
 
 export const getAllOrders = async () => {
   return await Order.find();
