@@ -1,4 +1,5 @@
 import express from 'express';
+
 import dotenv from 'dotenv';
 
 import path from 'path';
@@ -32,7 +33,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/auth', authRouter);
 app.use('/games', gamesRoutes);
 app.use('/user', wishlistRouter);
-app.use("/user/orders", orderRouter);
 
 
 // 404 handler root
@@ -51,6 +51,7 @@ connectMongoDB(process.env.MONGO_URI).then(
 
 // Error handler middleware
 app.use(errorHandler);
+
 
 
 
