@@ -1,5 +1,6 @@
 import WishItem from "../models/wishItem.model.mjs";
 import Game from "../models/game.model.mjs";
+import mongoose from "mongoose";
 
 export async function getWishlistById(userId) {
   try {
