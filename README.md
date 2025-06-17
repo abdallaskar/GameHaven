@@ -1,203 +1,77 @@
-# 📄 GameHaven API Documentation
+# 🎮 GameHaven REST API
 
-## 📘 Overview
+A full-featured backend API for a digital video game store, built with Node.js, Express, and MongoDB.
 
-The **GameHaven** API offers a complete backend solution for an e-commerce gaming platform. It allows developers to:
+## 📄 Project Overview
 
-- Manage user authentication
-- Handle CRUD operations for games (admin only)
-- Implement a shopping cart and wishlist system
-- Process orders
-- Collect and view user reviews on games
+GameHaven is a fictional video game marketplace. This backend system powers the entire store — from user registration to managing games, shopping carts, orders, reviews, and more.
 
-All responses are returned in JSON format.
-
-## 🚀 Getting Started
-
-To start using the **GameHaven API**, you need to:
-
-1. Set up your local server or deploy it.
-2. Use Postman, ThunderClient, or any REST client.
-3. Authenticate (for protected routes).
-4. Use the correct headers and follow request/response schemas.
-
-> All routes are based on `http://localhost:5000`
+The API follows RESTful standards, uses JWT-based authentication, and follows best practices in terms of structure, security, and scalability.
 
 ---
 
-## 🔐 Authentication
+## 🌐 Live Demo & Docs
 
-### 🔑 Register - `POST /auth/register`
-
-Registers a new user.
-
-**Request Body:**
-
-```json
-{
-  "username": "abdalla_sakr",
-  "email": "abdalla@example.com",
-  "password": "secret123"
-}
-```
-
-### 🔐 Login - `POST /auth/login`
-
-Logs in an existing user and returns a JWT token.
-
-**Request Body:**
-
-```json
-{
-  "email": "abdalla@example.com",
-  "password": "secret123"
-}
-```
-
-**Use Token:**
-
-```
-Headers: Authorization: Bearer <token>
-```
+- 📄 **Documentation (Word File)**: [GameHaven_API_Documentation.docx](link)
+- 🚀 **Live API Base URL**: `https://gamehaven-api.onrender.com` (example)
+- 🔧 **Frontend Repo** (if any): _Add your frontend repo link here_
 
 ---
 
-## 👥 User Routes (`/user`)
+## 🛠️ Tech Stack
 
-### 🙋‍♂️ Get Current User Info (Requires Auth) - `GET /user/me`
+- **Node.js** & **Express.js** – Server & Routing
+- **MongoDB** & **Mongoose** – Database & ODM
+- **JWT** – Authentication
+- **Bcrypt** – Password Hashing
+- **Multer** – File Upload (Game Cover Images)
+- **AJV** – Schema & Input Validation
+- **dotenv** – Environment Configuration
 
-Returns the profile information of the currently logged-in user.
-
-### 👥 Get All Users (Admin Only) - `GET /user/`
-
-Returns all users in the systme.
-
-### 👤 Get User By ID (Admin Only) - `GET /user/:id`
-
-Returns details of a user by their ID.
+> 📁 Architecture: MVC with Service Layer Abstraction
 
 ---
 
-## 🎮 Games Routes (`/games`)
+## 📦 Features
 
-### 📥 Get All Games - `GET /games`
+### 👤 Authentication & Authorization
 
-Returns a list of all games.
+- User registration & login (JWT-based)
+- Role-based access control (Admin/User)
 
-### 📥 Get Game By ID - `GET /games/:id`
+### 🎮 Game Management
 
-Returns details of a specific game.
+- CRUD operations (admin only)
+- Image upload for game covers
+- Filtering & pagination
 
-### 🆕 Create Game (Admin Only) - `POST /games`
+### 🛒 Shopping Cart
 
-Headers: `Authorization: Bearer <token>`
+- Add, remove, update quantities
+- Clear cart
+- View total cost
 
-📦 **Game Example:**
-**FormData:** (Include image file as `cover`)
+### 🧾 Orders
 
-```json
-{
-  "title": "Call of Sakr",
-  "platform": "PC",
-  "genre": "Action",
-  "description": "First-person shooter",
-  "price": 59.99,
-  "stock": 100,
-  "imageUrl": "https://example.com/images/elden-ring.jpg"
-}
-```
+- Place order from cart
+- View order history
 
-### 🔁 Update Game (Admin Only)- `PUT /games/:id`
+### ⭐ Reviews
 
-Same structure as POST `/games`.
+- Add & fetch reviews per game
+- View average rating
 
-### ❌ Delete Game (Admin Only)- `DELETE /games/:id`
+### ❤️ Wishlist
+
+- Add/remove games to wishlist
 
 ---
 
-## 📝 Reviews Routes (`/games/:id/reviews`)
+## 📁 Project Setup
 
-### 📥 Get All Reviews
-
-`GET /games/:id/reviews`
-
-### ➕ Add Review (Requires Auth)
-
-`POST /games/:id/reviews`
-
-```json
-{
-  "rating": 4,
-  "comment": "Exciting gameplay!"
-}
-```
-
----
-
-## 🛒 Cart Routes (`/cart`)
-
-### 📥 Get Cart Items (Auth) - `GET /cart`
-
-### ➕ Add to Cart (Auth) - `POST /cart`
-
-```json
-{
-  "gameId": "683f6a5abe2bbe5724086561"
-}
-```
-
-### 🔼 Increase Quantity (Auth) - `POST /cart/add/:id`
-
-### 🔽 Decrease Quantity (Auth) - `POST /cart/sub/:id`
-
-### 🗑️ Clear Cart (Auth) - `DELETE /cart/clear`
-
----
-
-## 💖 Wishlist Routes (`/user/wishlist`)
-
-### 📥 Get Wishlist (Auth) - `GET /user/wishlist`
-
-### ➕ Add to Wishlist (Auth) - `POST /user/wishlist`
-
-```json
-{
-  "gameId": "683f6a5abe2bbe5724086561"
-}
-```
-
----
-
-## 📦 Orders Routes (`/user/orders`)
-
-### 📥 Get All Orders (Auth) - `GET /user/orders`
-
-### ➕ Create Order (Auth) - `POST /user/orders`
-
-Automatically creates an order from cart items.
-
----
-
-## 🛡️ Authentication Summary
-
-This API uses **Bearer Token Auth**.
-You must include a token in your header:
+```bash
+git https://github.com/abdallaskar/GameHaven.git
+cd Gamehaven
+npm install
 
 ```
-Authorization: Bearer <your-token-here>
-```
-
-If the token is missing/invalid:
-
-- You receive: `401 Unauthorized`
-
----
-
-## ⏱️ Rate & Usage Limits
-
-- Up to 300 requests/minute
-- `429 Too Many Requests` if exceeded
-
----
-
-© 2025 GameHaven API
