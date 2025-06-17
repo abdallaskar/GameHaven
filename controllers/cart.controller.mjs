@@ -1,4 +1,4 @@
-import { addGameQuantityService, addToCartService, getCartItemsForUser, subtractGameQuantityService } from "../services/cart.services.mjs";
+import { addGameQuantityService, addToCartService, getCartItemsForUser, subtractGameQuantityService, clearCartService } from "../services/cart.services.mjs";
 
 
 export const addGameToCart = async (req, res) => {
@@ -13,6 +13,7 @@ export const getCartItems = async (req, res) => {
     //[TODO] : handle user id to get from jwt token
     //const userId = req.body.userId;
     const userId = req.user.id;
+
     const result = await getCartItemsForUser(userId);
     res.status(200).send(result);
 }

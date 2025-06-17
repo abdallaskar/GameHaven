@@ -15,7 +15,7 @@ import cartRouter from './routes/cart.router.mjs';
 
 // Setup __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);  // Fixed variable name
+const __dirname = path.dirname(__filename);
 // Load .env variables
 dotenv.config();
 const PORT = process.env.PORT;
