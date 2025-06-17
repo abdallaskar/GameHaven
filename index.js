@@ -11,6 +11,7 @@ import orderRouter from "./routes/order.routes.mjs";
 
 import errorHandler from './middlewares/error.middleware.mjs';
 import cartRouter from './routes/cart.router.mjs';
+import userRouter from './routes/user.routes.mjs';
 
 
 // Setup __dirname in ES modules
@@ -31,6 +32,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/auth', authRouter);
+app.use("/user", userRouter);
 app.use('/games', gamesRoutes);
 app.use('/cart', cartRouter);
 app.use('/user', wishlistRouter);

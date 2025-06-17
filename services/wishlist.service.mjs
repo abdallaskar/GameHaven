@@ -33,6 +33,7 @@ export async function getWishlistById(userId) {
     if (wishList.length === 0) {
       return { userId, games: [] };
     }
+    return wishList[0];
 
   } catch (error) {
     throw error;

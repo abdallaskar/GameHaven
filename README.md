@@ -62,6 +62,22 @@ Headers: Authorization: Bearer <token>
 
 ---
 
+## 👥 User Routes (`/user`)
+
+### 🙋‍♂️ Get Current User Info (Requires Auth) - `GET /user/me`
+
+Returns the profile information of the currently logged-in user.
+
+### 👥 Get All Users (Admin Only) - `GET /user/`
+
+Returns all users in the systme.
+
+### 👤 Get User By ID (Admin Only) - `GET /user/:id`
+
+Returns details of a user by their ID.
+
+---
+
 ## 🎮 Games Routes (`/games`)
 
 ### 📥 Get All Games - `GET /games`
