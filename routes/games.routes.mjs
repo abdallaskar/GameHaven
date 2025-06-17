@@ -38,4 +38,8 @@ router.delete(
     GameController.deleteGame
 );
 
+router.get('/:id/reviews', GameController.getReviews);
+router.post('/:id/reviews', authMiddleware, GameController.addReview);
+
+
 export default router;

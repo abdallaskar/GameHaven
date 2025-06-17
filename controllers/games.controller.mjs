@@ -42,8 +42,17 @@ export const createGame = async (req, res, next) => {
 
 export const updateGame = async (req, res, next) => {
     try {
-        const imageUrl = req.file?.path;
-        const updated = await GameService.updateGame(req.params.id, req.body, imageUrl);
+        let imageUrl = req.body.imageUrl; // fallback to existing image
+        if (req.file) {
+            imageUrl = `/uploads/covers/${req.file.filename}`;
+        }
+
+        const gameData = {
+            ...req.body,
+            ...(imageUrl && { imageUrl })
+        };
+
+        const updated = await GameService.updateGame(req.params.id, gameData);
         res.status(200).json(updated);
     } catch (err) {
         next(err);
@@ -70,3 +79,30 @@ export const deleteGame = async (req, res, next) => {
     }
 };
 
+
+export const addReview = async (req, res, next) => {
+    try {
+        const { rating, comment } = req.body;
+        const userId = req.user.id;
+        const gameId = req.params.id;
+
+        if (typeof rating !== 'number' || rating < 0 || rating > 5) {
+            return res.status(400).json({ message: 'Rating must be between 0 and 5' });
+        }
+
+        const review = await GameService.addReviewService(userId, gameId, rating, comment);
+        res.status(201).json({ message: 'Review added successfully', review });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const getReviews = async (req, res, next) => {
+    try {
+        const gameId = req.params.id;
+        const reviews = await GameService.getReviewsService(gameId);
+        res.json(reviews);
+    } catch (err) {
+        next(err);
+    }
+};

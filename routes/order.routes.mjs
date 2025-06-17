@@ -13,11 +13,9 @@ const orderRouter = Router();
 
 // add Authtication middle ware and then get user id using parsing JWT read from data base cart items for this user
 // then delete this cart itesm and add it into order collection and get user messgae "order done"
-orderRouter
-  .route("/")
-  .get(getOrders)
-  .post(authenticate, validate(orderAjvSchema), createAnOrder);
 
-orderRouter.route("/:id").get(getSingleOrder);
+orderRouter.get("/orders", authenticate, getOrders);
+orderRouter.post("/orders", authenticate, createAnOrder);
+orderRouter.get("/orders/:id", authenticate, getSingleOrder);
 
 export default orderRouter;

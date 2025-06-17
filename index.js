@@ -34,7 +34,7 @@ app.use('/auth', authRouter);
 app.use('/games', gamesRoutes);
 app.use('/cart', cartRouter);
 app.use('/user', wishlistRouter);
-app.use("/user/orders", orderRouter);
+app.use("/user", orderRouter);
 
 
 // 404 handler root

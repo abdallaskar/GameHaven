@@ -1,18 +1,23 @@
 import mongoose from "mongoose";
 import Cart from "../models/cart.model.mjs"
+import Game from "../models/game.model.mjs";
 
-export const addToCartService = async (userId, game) => {
+export const addToCartService = async (userId, gameId) => {
     const existingCart = await Cart.findOne({ userId });
+    const game = await Game.findOne({ _id: gameId });
+    if (!game) {
+        return 'Game not found';
+    }
 
     // Initialize quantity and productPrice
     const newGameItem = {
-        gameId: new mongoose.Types.ObjectId(game._id || game.gameId), // Ensure ObjectId format
+        gameId: new mongoose.Types.ObjectId(gameId), // Ensure ObjectId format
         quantity: 1,
-        productPrice: game.productPrice || game.price
+        productPrice: game.price
     };
 
     if (existingCart) {
-        const isInItems = existingCart.items.find(p => p.gameId === game.gameId);
+        const isInItems = existingCart.items.find(p => p.gameId === gameId);
         if (isInItems) {
             return 'This item is already in the cart';
         }

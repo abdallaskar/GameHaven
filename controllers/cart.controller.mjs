@@ -2,9 +2,9 @@ import { addGameQuantityService, addToCartService, getCartItemsForUser, subtract
 
 
 export const addGameToCart = async (req, res) => {
-    const gameData = req.body;
+    const gameId = req.body.gameId;
     const userId = req.user.id;
-    const result = await addToCartService(userId, gameData);
+    const result = await addToCartService(userId, gameId);
     res.status(200).send(result);
 
 }

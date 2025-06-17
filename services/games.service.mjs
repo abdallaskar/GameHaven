@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Game from '../models/game.model.mjs';
 
 /**
@@ -52,10 +53,10 @@ export const createGame = async (data) => {
 /**
  * Admin: Update game details by ID.
  */
-export const updateGame = async (id, data, imageUrl) => {
+export const updateGame = async (id, data) => {
     const updatedGame = await Game.findByIdAndUpdate(
         id,
-        { ...data, ...(imageUrl && { imageUrl }) },
+        data,
         { new: true, runValidators: true }
     );
 
@@ -79,4 +80,53 @@ export const deleteGame = async (id) => {
         throw error;
     }
     return { message: 'Game deleted successfully' };
+};
+
+export const addReviewService = async (userId, gameId, rating, comment) => {
+    if (!mongoose.Types.ObjectId.isValid(gameId)) {
+        throw new Error('Invalid game ID');
+    }
+
+    const game = await Game.findById(gameId);
+    if (!game) {
+        const error = new Error('Game not found');
+        error.status = 404;
+        throw error;
+    }
+
+    const alreadyReviewed = game.reviews.find(r => r.userId.toString() === userId);
+    if (alreadyReviewed) {
+        const error = new Error('You have already reviewed this game');
+        error.status = 400;
+        throw error;
+    }
+
+    const review = {
+        userId,
+        rating,
+        comment,
+    };
+
+    game.reviews.push(review);
+    await game.save();
+
+    return review;
+};
+
+export const getReviewsService = async (gameId) => {
+    if (!mongoose.Types.ObjectId.isValid(gameId)) {
+        const error = new Error('Invalid game ID');
+        error.status = 400;
+        throw error;
+    }
+
+    const game = await Game.findById(gameId).populate('reviews.userId', 'username');
+
+    if (!game) {
+        const error = new Error('Game not found');
+        error.status = 404;
+        throw error;
+    }
+
+    return game.reviews;
 };
