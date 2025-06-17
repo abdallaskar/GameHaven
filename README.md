@@ -1,17 +1,37 @@
-# 📘 GameHaven API Documentation
+# 📄 GameHaven API Documentation
 
-**Base URL:** `http://localhost:5000`
+## 📘 Overview
+
+The **GameHaven** API offers a complete backend solution for an e-commerce gaming platform. It allows developers to:
+
+- Manage user authentication
+- Handle CRUD operations for games (admin only)
+- Implement a shopping cart and wishlist system
+- Process orders
+- Collect and view user reviews on games
+
+All responses are returned in JSON format.
+
+## 🚀 Getting Started
+
+To start using the **GameHaven API**, you need to:
+
+1. Set up your local server or deploy it.
+2. Use Postman, ThunderClient, or any REST client.
+3. Authenticate (for protected routes).
+4. Use the correct headers and follow request/response schemas.
+
+> All routes are based on `http://localhost:5000`
 
 ---
 
-## 📌 Authentication Routes (`/auth`)
+## 🔐 Authentication
 
-### 🔐 Register
+### 🔑 Register - `POST /auth/register`
 
-**POST** `/auth/register`  
-Register a new user.
+Registers a new user.
 
-#### Request Body
+**Request Body:**
 
 ```json
 {
@@ -21,13 +41,11 @@ Register a new user.
 }
 ```
 
----
+### 🔐 Login - `POST /auth/login`
 
-### 🔑 Login
+Logs in an existing user and returns a JWT token.
 
-**POST** `/auth/login`
-
-#### Request Body
+**Request Body:**
 
 ```json
 {
@@ -36,32 +54,30 @@ Register a new user.
 }
 ```
 
-Response with a token. Copy this token and add it to the Authorization header like this:  
-**Headers:** `Authorization: Bearer <token>`
+**Use Token:**
+
+```
+Headers: Authorization: Bearer <token>
+```
 
 ---
 
 ## 🎮 Games Routes (`/games`)
 
-### 🔍 Get All Games
+### 📥 Get All Games - `GET /games`
 
-**GET** `/games`  
-Returns an array of games.
+Returns a list of all games.
 
-### 🔍 Get Single Game
+### 📥 Get Game By ID - `GET /games/:id`
 
-**GET** `/games/:id`  
-Returns one game.
+Returns details of a specific game.
 
-### ✍️ Create Game (Admin)
+### 🆕 Create Game (Admin Only) - `POST /games`
 
-**POST** `/games`  
-Requires authentication and admin role.
+Headers: `Authorization: Bearer <token>`
 
-**Headers:** `Authorization: Bearer <token>`  
-FormData with cover file upload.
-
-#### Body Example
+📦 **Game Example:**
+**FormData:** (Include image file as `cover`)
 
 ```json
 {
@@ -70,34 +86,28 @@ FormData with cover file upload.
   "genre": "Action",
   "description": "First-person shooter",
   "price": 59.99,
-  "stock": 100
+  "stock": 100,
+  "imageUrl": "https://example.com/images/elden-ring.jpg"
 }
 ```
 
-### 🔄 Update Game (Admin)
+### 🔁 Update Game (Admin Only)- `PUT /games/:id`
 
-**PUT** `/games/:id`  
-Same schema and behavior as POST `/games`.
+Same structure as POST `/games`.
 
-### ❌ Delete Game (Admin)
-
-**DELETE** `/games/:id`
+### ❌ Delete Game (Admin Only)- `DELETE /games/:id`
 
 ---
 
-## 💬 Reviews (`/games/:id/reviews`)
+## 📝 Reviews Routes (`/games/:id/reviews`)
 
-### Get Reviews
+### 📥 Get All Reviews
 
-**GET** `/games/:id/reviews`  
-Returns all reviews for the specified game.
+`GET /games/:id/reviews`
 
-### Add Review
+### ➕ Add Review (Requires Auth)
 
-**POST** `/games/:id/reviews`  
-Requires authentication.
-
-#### Request Body
+`POST /games/:id/reviews`
 
 ```json
 {
@@ -110,16 +120,9 @@ Requires authentication.
 
 ## 🛒 Cart Routes (`/cart`)
 
-### Get Cart Items
+### 📥 Get Cart Items (Auth) - `GET /cart`
 
-**GET** `/cart`  
-Requires authentication.
-
-### Add to Cart
-
-**POST** `/cart`
-
-#### Request Body
+### ➕ Add to Cart (Auth) - `POST /cart`
 
 ```json
 {
@@ -127,36 +130,19 @@ Requires authentication.
 }
 ```
 
-### Increase Quantity
+### 🔼 Increase Quantity (Auth) - `POST /cart/add/:id`
 
-**POST** `/cart/add/:id`  
-Requires authentication.
+### 🔽 Decrease Quantity (Auth) - `POST /cart/sub/:id`
 
-### Decrease Quantity
-
-**POST** `/cart/sub/:id`  
-Requires authentication.
-
-### 🧹 Clear Cart
-
-**DELETE** `/cart/clear`  
-Requires authentication.
+### 🗑️ Clear Cart (Auth) - `DELETE /cart/clear`
 
 ---
 
-## ❤️ Wishlist (`/user/wishlist`)
+## 💖 Wishlist Routes (`/user/wishlist`)
 
-### Get Wishlist
+### 📥 Get Wishlist (Auth) - `GET /user/wishlist`
 
-**GET** `/user/wishlist`  
-Requires authentication.
-
-### Add to Wishlist
-
-**POST** `/user/wishlist`  
-Requires authentication.
-
-#### Request Body
+### ➕ Add to Wishlist (Auth) - `POST /user/wishlist`
 
 ```json
 {
@@ -166,15 +152,36 @@ Requires authentication.
 
 ---
 
-## 📦 Orders (`/user/orders`)
+## 📦 Orders Routes (`/user/orders`)
 
-### Get All Orders
+### 📥 Get All Orders (Auth) - `GET /user/orders`
 
-**GET** `/user/orders`  
-Requires authentication.
+### ➕ Create Order (Auth) - `POST /user/orders`
 
-### Create Order
+Automatically creates an order from cart items.
 
-**POST** `/user/orders`  
-Requires authentication.  
-Automatically creates an order based on cart items.
+---
+
+## 🛡️ Authentication Summary
+
+This API uses **Bearer Token Auth**.
+You must include a token in your header:
+
+```
+Authorization: Bearer <your-token-here>
+```
+
+If the token is missing/invalid:
+
+- You receive: `401 Unauthorized`
+
+---
+
+## ⏱️ Rate & Usage Limits
+
+- Up to 300 requests/minute
+- `429 Too Many Requests` if exceeded
+
+---
+
+© 2025 GameHaven API
