@@ -1,6 +1,8 @@
-import { validationResult } from "express-validator";
-
-import { getAllOrders, getOrderById, createOrder } from "../services/order.service.mjs";
+import {
+  getAllOrders,
+  getOrderById,
+  createOrder,
+} from "../services/order.service.mjs";
 
 export const getOrders = async (req, res) => {
   try {
@@ -26,16 +28,12 @@ export const getSingleOrder = async (req, res) => {
 };
 
 export const createAnOrder = async (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors.array());
-  }
   try {
-    const order = await createOrder(req.body);
+    const order = await createOrder(req.user.id);
 
-    res.status(201).json({ data: order });
+    res.status(201).json({ message: "Ordered Seccessfully", data: order });
   } catch (error) {
+    console.error("Order creation Failed", error);
     res.status(500).json({ error: error.message });
   }
 };

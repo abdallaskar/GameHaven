@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-// user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 
 const orderSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -11,11 +10,11 @@ const orderSchema = new mongoose.Schema({
         required: true,
       },
       title: { type: String },
-      quantity: { type: Number, required: true },
-      price: { type: Number, required: true },
+      quantity: { type: Number, required: true , min:1 },
+      price: { type: Number, required: true,min:0 },
     },
   ],
-  totalPrice: { type: Number, required: true },
+  totalPrice: { type: Number, required: true,min:0 },
   placedAt: { type: Date, default: Date.now },
 });
 
