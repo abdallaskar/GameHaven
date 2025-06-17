@@ -30,9 +30,10 @@ export async function getWishlistById(userId) {
         },
       },
     ]).exec();
-    if (wishList.length === 0)
+    if (wishList.length === 0) {
       return { userId, games: [] };
-    if (wishList.length > 1) return wishList[0];
+    }
+
   } catch (error) {
     throw error;
   }
