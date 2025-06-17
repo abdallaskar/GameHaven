@@ -20,8 +20,20 @@ export const getGameById = async (req, res, next) => {
 
 export const createGame = async (req, res, next) => {
     try {
-        const newGame = await GameService.createGame(req.body, req.body.imageUrl);
-        res.status(200).status(201).json(newGame);
+        let imageUrl = `/uploads/covers/default-game.jpg`;
+        console.log("req.file", req.file);
+        console.log("req.body", req.body);
+        console.log("req.body.imageUrl", req.body.cover);
+        if (req.file) {
+            imageUrl = `/uploads/covers/${req.file.filename}`;
+        }
+        // Add imageUrl to the request body
+        const gameData = {
+            ...req.body,
+            imageUrl: imageUrl
+        };
+        const newGame = await GameService.createGame(gameData);
+        res.status(201).json(newGame);
     } catch (err) {
         console.log("catch error");
         next(err);
@@ -40,9 +52,21 @@ export const updateGame = async (req, res, next) => {
 
 export const deleteGame = async (req, res, next) => {
     try {
+        const game = await GameService.getGameById(req.params.id);
+
+        if (!game) {
+            return res.status(404).json({ message: 'Game not found' });
+        }
+
+        // Check ownership
+        if (game.userId.toString() !== req.user.id && !req.user.isAdmin) {
+            return res.status(403).json({ message: 'Not authorized to delete this game' });
+        }
+
         const result = await GameService.deleteGame(req.params.id);
         res.status(200).json(result);
     } catch (err) {
         next(err);
     }
 };
+

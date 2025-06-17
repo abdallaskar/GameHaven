@@ -44,8 +44,8 @@ export const getGameById = async (id) => {
 /**
  * Admin: Add a new game.
  */
-export const createGame = async (data, imageUrl) => {
-    const game = await Game.create({ ...data, imageUrl });
+export const createGame = async (data) => {
+    const game = await Game.create(data);
     return game;
 };
 

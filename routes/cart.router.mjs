@@ -10,10 +10,10 @@ import {
 
 const cartRouter = Router();
 
+cartRouter.get('/', authMiddleware, getCartItems);
 cartRouter.post('/', authMiddleware, addGameToCart);
 cartRouter.post('/add/:id', authMiddleware, addGameQuantity);
 cartRouter.post('/sub/:id', authMiddleware, subtractGameQuantity);
-cartRouter.get('/', authMiddleware, getCartItems);
 cartRouter.delete('/clear', authMiddleware, clearCart);
 
 export default cartRouter;

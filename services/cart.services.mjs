@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Cart from "../models/cart.model.mjs"
 
 export const addToCartService = async (userId, game) => {
@@ -5,7 +6,7 @@ export const addToCartService = async (userId, game) => {
 
     // Initialize quantity and productPrice
     const newGameItem = {
-        ...game,
+        gameId: new mongoose.Types.ObjectId(game._id || game.gameId), // Ensure ObjectId format
         quantity: 1,
         productPrice: game.productPrice || game.price
     };
@@ -43,28 +44,47 @@ export const getCartItemsForUser = async (userId) => {
 };
 
 export const addGameQuantityService = async (userId, gameId) => {
-    const cart = await Cart.findOne({ userId, 'items.gameId': +gameId });
+    const cart = await Cart.findOne({
+        userId: new mongoose.Types.ObjectId(userId),
+        'items.gameId': new mongoose.Types.ObjectId(gameId)
+    });
+
     if (!cart) return 'Cart not found';
 
     cart.items = cart.items.map(item =>
-        item.gameId === +gameId ? { ...item.toObject(), quantity: item.quantity + 1 } : item
+        item.gameId.equals(gameId) ? { ...item.toObject(), quantity: item.quantity + 1 } : item
     );
 
-    const result = await Cart.findOneAndUpdate({ userId }, { items: cart.items }, { new: true });
+    const result = await Cart.findOneAndUpdate(
+        { userId },
+        { items: cart.items },
+        { new: true }
+    );
+
     return result;
+
 };
 
 export const subtractGameQuantityService = async (userId, gameId) => {
-    const cart = await Cart.findOne({ userId, 'items.gameId': +gameId });
+    const cart = await Cart.findOne({
+        userId: new mongoose.Types.ObjectId(userId),
+        'items.gameId': new mongoose.Types.ObjectId(gameId)
+    });
+
     if (!cart) return 'Cart not found';
 
     cart.items = cart.items.map(item =>
-        item.gameId === +gameId && item.quantity > 1
+        item.gameId.equals(gameId) && item.quantity > 1
             ? { ...item.toObject(), quantity: item.quantity - 1 }
             : item
     );
 
-    const result = await Cart.findOneAndUpdate({ userId }, { items: cart.items }, { new: true });
+    const result = await Cart.findOneAndUpdate(
+        { userId },
+        { items: cart.items },
+        { new: true }
+    );
+
     return result;
 };
 

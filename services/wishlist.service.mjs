@@ -1,5 +1,6 @@
 import WishItem from "../models/wishItem.model.mjs";
 import Game from "../models/game.model.mjs";
+import mongoose from "mongoose";
 
 export async function getWishlistById(userId) {
   try {
@@ -30,8 +31,8 @@ export async function getWishlistById(userId) {
       },
     ]).exec();
     if (wishList.length === 0)
-      throw new Error("No wishlist found for this user");
-    return wishList[0];
+      return { userId, games: [] };
+    if (wishList.length > 1) return wishList[0];
   } catch (error) {
     throw error;
   }

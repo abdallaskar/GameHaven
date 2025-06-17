@@ -1,21 +1,22 @@
-import * as userService from "../services/wishlist.service.mjs"; 
+import mongoose from "mongoose";
+import * as userService from "../services/wishlist.service.mjs";
 
-export async function getWishlistByUserId(req, res){
-if (!req.userId) return res.status(401).json({ message: "Unauthorized" });
-    const userId = req.userId; 
-    if(!mongoose.Types.ObjectId.isValid(userId)) throw new Error("Not a valid userId"); 
-    try{
-        const wishlist = await userService.getWishlistByUserId(userId); 
-        res.status(200).json({wishlist: wishlist})
-    }catch(error){
-        console.log(error)
-        // res.status(500).json({ success: false, message: error.message });
-        next(error); 
-    }
+export async function getWishlistByUserId(req, res, next) {
+  if (!req.user.id) return res.status(401).json({ message: "Unauthorized" });
+  const userId = req.user.id;
+  if (!mongoose.Types.ObjectId.isValid(userId)) throw new Error("Not a valid userId");
+  try {
+    const wishlist = await userService.getWishlistById(userId);
+    res.status(200).json({ wishlist: wishlist })
+  } catch (error) {
+    console.log(error)
+    // res.status(500).json({ success: false, message: error.message });
+    next(error);
+  }
 }
 
 export async function addWishItem(req, res, next) {
-  const userId = req.userId; 
+  const userId = req.userId;
   const { gameId } = req.body;
 
   if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
