@@ -13,8 +13,8 @@ The API follows RESTful standards, uses JWT-based authentication, and follows be
 ## 🌐 Live Demo & Docs
 
 - 📄 **Documentation (Word File)**: [GameHaven_API_Documentation](https://drive.google.com/drive/folders/1gjkN0f-aZNSmT2uwFNhR5-W8kuZmHdn0?usp=sharing)
-- 🚀 **Live API Base URL**: `https://gamehaven-api.onrender.com` (example)
-- 🔧 **Frontend Repo** (if any): _Add your frontend repo link here_
+- 🚀 **Live API Base URL**: `Soon` (Soon)
+- 🔧 **Frontend Repo** : in develpoment now 
 
 ---
 
